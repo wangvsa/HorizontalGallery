@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -106,8 +107,7 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
         //当前第一张图片小标
         mFristIndex++;
         //如果设置了滚动监听则触发
-        if (mListener != null)
-        {
+        if (mListener != null) {
             notifyCurrentImgChanged();
         }
 
@@ -115,15 +115,13 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
     /**
      * 加载前一张图片
      */
-    protected void loadPreImg()
-    {
+    protected void loadPreImg() {
         //如果当前已经是第一张，则返回
         if (mFristIndex == 0)
             return;
         //获得当前应该显示为第一张图片的下标
         int index = mCurrentIndex - mCountOneScreen;
-        if (index >= 0)
-        {
+        if (index >= 0) {
 //          mContainer = (LinearLayout) getChildAt(0);
             //移除最后一张
             int oldViewPos = mContainer.getChildCount() - 1;
@@ -152,11 +150,9 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
     /**
      * 滑动时的回调
      */
-    public void notifyCurrentImgChanged()
-    {
+    public void notifyCurrentImgChanged() {
         //先清除所有的背景色，点击时会设置为蓝色
-        for (int i = 0; i < mContainer.getChildCount(); i++)
-        {
+        for (int i = 0; i < mContainer.getChildCount(); i++) {
             mContainer.getChildAt(i).setBackgroundColor(Color.WHITE);
         }
 
@@ -169,8 +165,7 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
      *
      * @param mAdapter
      */
-    public void initDatas(HorizontalGalleryAdapter mAdapter)
-    {
+    public void initDatas(HorizontalGalleryAdapter mAdapter) {
         this.mAdapter = mAdapter;
         mContainer = (LinearLayout) findViewById(R.id.horizontal_gallery_content);
         // 获得适配器中第一个View
@@ -179,16 +174,13 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
 
         // 强制计算当前View的宽和高
         if (mChildWidth == 0 && mChildHeight == 0) {
-            int w = View.MeasureSpec.makeMeasureSpec(0,
-                    View.MeasureSpec.UNSPECIFIED);
-            int h = View.MeasureSpec.makeMeasureSpec(0,
-                    View.MeasureSpec.UNSPECIFIED);
+            int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
             view.measure(w, h);
-            mChildHeight = view.getMeasuredHeight();
             mChildWidth = view.getMeasuredWidth();
             mChildHeight = view.getMeasuredHeight();
             // 计算每次加载多少个View
-            mCountOneScreen = mScreenWitdh / mChildWidth+2;
+            mCountOneScreen = mScreenWitdh / mChildWidth + 2;
         }
         //初始化第一屏幕的元素
         initFirstScreenChildren(mCountOneScreen);
@@ -200,6 +192,7 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
      * @param mCountOneScreen
      */
     public void initFirstScreenChildren(int mCountOneScreen) {
+        Log.i(TAG, "count: "+mCountOneScreen);
         mContainer = (LinearLayout) findViewById(R.id.horizontal_gallery_content);
         mContainer.removeAllViews();
         mViewPos.clear();
