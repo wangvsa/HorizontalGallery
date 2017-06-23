@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
+    <ImageView
+        android:id="@+id/horizontal_gallery_sample_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_camera"/>
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -12,7 +17,7 @@
         android:layout_weight="1" >
 
         <ImageView
-            android:id="@+id/id_content"
+            android:id="@+id/horizontal_gallery_sample_image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"

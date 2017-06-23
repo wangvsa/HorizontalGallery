@@ -73,4 +73,7 @@ public class HorizontalGalleryAdapter {
     public void remove(int i) {
         this.mDatas.remove(i);
     }
+    public void add(String uri) {
+        this.mDatas.add(uri);
+    }
 }

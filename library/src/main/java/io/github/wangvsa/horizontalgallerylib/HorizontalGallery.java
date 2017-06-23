@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +16,10 @@ import java.util.Map;
 
 /**
  * Created by wangchen on 6/22/17.
+ *
+ * Only two methods are exposed to the user.
+ * 1. setHorizontalGalleryAdapter(HorizontalGalleryAdapter adapter)
+ * 2. addImage(String uri)
  */
 public class HorizontalGallery extends HorizontalScrollView implements View.OnClickListener {
 
@@ -159,7 +162,7 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
      *
      * @param mAdapter
      */
-    public void initDatas(HorizontalGalleryAdapter mAdapter) {
+    public void setHorizontalGalleryAdapter(HorizontalGalleryAdapter mAdapter) {
         this.mAdapter = mAdapter;
         mContainer = (LinearLayout) findViewById(R.id.horizontal_gallery_content);
         // 获得适配器中第一个View
@@ -205,8 +208,14 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
         if (mListener != null) {
             notifyCurrentImgChanged();
         }
-
     }
+
+
+    public void addImage(String uri) {
+        mAdapter.add(uri);
+        setHorizontalGalleryAdapter(mAdapter);
+    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -230,7 +239,7 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
     public void onClick(View v) {
         if(v.getId() == R.id.horizontal_gallery_item_remove) {  // remove picture
             mAdapter.remove(mViewPos.get(v.getParent()));
-            initDatas(mAdapter);
+            setHorizontalGalleryAdapter(mAdapter);
         }
 
         if (mOnClickListener != null) {
