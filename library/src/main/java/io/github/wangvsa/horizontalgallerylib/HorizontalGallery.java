@@ -239,11 +239,12 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
     public void onClick(View v) {
         if(v.getId() == R.id.horizontal_gallery_item_remove) {  // remove picture
             int pos = mViewPos.get(v.getParent());
+            String uri = (String)mAdapter.getItem(pos);
             mAdapter.remove(pos);
             setHorizontalGalleryAdapter(mAdapter);
 
             if(mOnItemRemovedListener != null) {
-                mOnItemRemovedListener.onItemRemovedListener(pos, (String)mAdapter.getItem(pos));
+                mOnItemRemovedListener.onItemRemovedListener(pos, uri);
             }
             return;
         }
