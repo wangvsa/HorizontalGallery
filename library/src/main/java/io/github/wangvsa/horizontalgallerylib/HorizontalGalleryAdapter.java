@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.List;
 
 /**
@@ -16,12 +18,15 @@ import java.util.List;
 public class HorizontalGalleryAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<Integer> mDatas;
+    private List<String> mDatas;        // Uri, as the accceptable uris of Universal Image Loader
 
-    public HorizontalGalleryAdapter(Context context, List<Integer> mDatas) {
+    public HorizontalGalleryAdapter(Context context, List<String> mDatas) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
         this.mDatas = mDatas;
+
+        // Init Image Loader
+        HGApplication.initImageLoader(context.getApplicationContext());
     }
 
     public int getCount()  {
@@ -48,8 +53,11 @@ public class HorizontalGalleryAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.mImg.setImageResource(mDatas.get(position));
-        viewHolder.mText.setText("some info ");
+
+        if(position < mDatas.size()) {
+            ImageLoader.getInstance().displayImage(mDatas.get(position), viewHolder.mImg);
+            viewHolder.mText.setText("some info");
+        }
 
         return convertView;
     }
@@ -57,5 +65,12 @@ public class HorizontalGalleryAdapter {
     private class ViewHolder {
         ImageView mImg;
         TextView mText;
+    }
+
+
+
+
+    public void remove(int i) {
+        this.mDatas.remove(i);
     }
 }

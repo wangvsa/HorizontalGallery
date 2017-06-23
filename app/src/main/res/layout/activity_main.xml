@@ -23,7 +23,6 @@
 
     <io.github.wangvsa.horizontalgallerylib.HorizontalGallery
         android:id="@+id/horizontal_gallery"
-        android:background="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 

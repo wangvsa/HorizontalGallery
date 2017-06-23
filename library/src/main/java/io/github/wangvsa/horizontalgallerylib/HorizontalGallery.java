@@ -18,23 +18,9 @@ import java.util.Map;
 /**
  * Created by wangchen on 6/22/17.
  */
-
 public class HorizontalGallery extends HorizontalScrollView implements View.OnClickListener {
 
     private static final String TAG = "horizontal_gallery";
-
-
-    public interface CurrentImageChangeListener {
-        void onCurrentImgChanged(int position, View viewIndicator);
-    }
-    private CurrentImageChangeListener mListener;
-
-
-    public interface OnItemClickListener {
-        void onClick(View view, int pos);
-    }
-    private OnItemClickListener mOnClickListener;
-
 
 
     private LinearLayout mContainer;
@@ -101,6 +87,10 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
         //获取下一张图片，并且设置onclick事件，且加入容器中
         View view = mAdapter.getView(++mCurrentIndex, null, mContainer);
         view.setOnClickListener(this);
+
+        View removeButton = view.findViewById(R.id.horizontal_gallery_item_remove);
+        removeButton.setOnClickListener(this);
+
         mContainer.addView(view);
         mViewPos.put(view, mCurrentIndex);
 
@@ -133,6 +123,10 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
             mViewPos.put(view, index);
             mContainer.addView(view, 0);
             view.setOnClickListener(this);
+
+            View removeButton = view.findViewById(R.id.horizontal_gallery_item_remove);
+            removeButton.setOnClickListener(this);
+
             //水平滚动位置向左移动view的宽度个像素
             scrollTo(mChildWidth, 0);
             //当前位置--，当前第一个显示的下标--
@@ -191,8 +185,7 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
      *
      * @param mCountOneScreen
      */
-    public void initFirstScreenChildren(int mCountOneScreen) {
-        Log.i(TAG, "count: "+mCountOneScreen);
+    private void initFirstScreenChildren(int mCountOneScreen) {
         mContainer = (LinearLayout) findViewById(R.id.horizontal_gallery_content);
         mContainer.removeAllViews();
         mViewPos.clear();
@@ -200,6 +193,10 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
         for (int i = 0; i < mCountOneScreen && i < mAdapter.getCount(); i++) {
             View view = mAdapter.getView(i, null, mContainer);
             view.setOnClickListener(this);
+
+            View removeButton = view.findViewById(R.id.horizontal_gallery_item_remove);
+            removeButton.setOnClickListener(this);
+
             mContainer.addView(view);
             mViewPos.put(view, i);
             mCurrentIndex = i;
@@ -231,6 +228,11 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
 
     @Override
     public void onClick(View v) {
+        if(v.getId() == R.id.horizontal_gallery_item_remove) {  // remove picture
+            mAdapter.remove(mViewPos.get(v.getParent()));
+            initDatas(mAdapter);
+        }
+
         if (mOnClickListener != null) {
             for (int i = 0; i < mContainer.getChildCount(); i++) {
                 mContainer.getChildAt(i).setBackgroundColor(Color.WHITE);
@@ -239,11 +241,28 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
         }
     }
 
+
+
+
+
+
+    public interface CurrentImageChangeListener {
+        void onCurrentImgChanged(int position, View viewIndicator);
+    }
+    private CurrentImageChangeListener mListener;
     public void setOnItemClickListener(OnItemClickListener onClickListener) {
         this.mOnClickListener = onClickListener;
     }
 
+
+    public interface OnItemClickListener {
+        void onClick(View view, int pos);
+    }
+    private OnItemClickListener mOnClickListener;
     public void setCurrentImageChangeListener(CurrentImageChangeListener listener) {
         this.mListener = listener;
     }
+
+
+
 }
