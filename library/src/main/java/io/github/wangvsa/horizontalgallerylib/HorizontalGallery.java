@@ -238,9 +238,16 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.horizontal_gallery_item_remove) {  // remove picture
-            mAdapter.remove(mViewPos.get(v.getParent()));
+            int pos = mViewPos.get(v.getParent());
+            mAdapter.remove(pos);
             setHorizontalGalleryAdapter(mAdapter);
+
+            if(mOnItemRemovedListener != null) {
+                mOnItemRemovedListener.onItemRemovedListener(pos, (String)mAdapter.getItem(pos));
+            }
+            return;
         }
+
 
         if (mOnClickListener != null) {
             for (int i = 0; i < mContainer.getChildCount(); i++) {
@@ -254,22 +261,32 @@ public class HorizontalGallery extends HorizontalScrollView implements View.OnCl
 
 
 
-
     public interface CurrentImageChangeListener {
         void onCurrentImgChanged(int position, View viewIndicator);
     }
     private CurrentImageChangeListener mListener;
-    public void setOnItemClickListener(OnItemClickListener onClickListener) {
-        this.mOnClickListener = onClickListener;
+    public void setCurrentImageChangeListener(CurrentImageChangeListener listener) {
+        this.mListener = listener;
     }
+
+
 
 
     public interface OnItemClickListener {
         void onClick(View view, int pos);
     }
     private OnItemClickListener mOnClickListener;
-    public void setCurrentImageChangeListener(CurrentImageChangeListener listener) {
-        this.mListener = listener;
+    public void setOnItemClickListener(OnItemClickListener onClickListener) {
+        this.mOnClickListener = onClickListener;
+    }
+
+
+    public interface OnItemRemovedListener {
+        void onItemRemovedListener(int pos, String uri);     // return the removed image's uri
+    }
+    private OnItemRemovedListener mOnItemRemovedListener;
+    public void setOnItemRemovedListener(OnItemRemovedListener onItemRemovedListener) {
+        this.mOnItemRemovedListener = onItemRemovedListener;
     }
 
 
