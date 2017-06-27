@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.List;
 
@@ -55,7 +57,8 @@ public class HorizontalGalleryAdapter {
         }
 
         if(position < mDatas.size()) {
-            ImageLoader.getInstance().displayImage(mDatas.get(position), viewHolder.mImg);
+            DisplayImageOptions options = new DisplayImageOptions.Builder().considerExifParams(true).build();
+            ImageLoader.getInstance().displayImage(mDatas.get(position), viewHolder.mImg, options);
             viewHolder.mText.setText("some info");
         }
 
